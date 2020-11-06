@@ -14,6 +14,7 @@ export default function Home() {
             <Button icon='pi pi-times' className='p-button-text p-button-rounded'/>
           </div>
           <ProgressBar value={15} showValue={false}/>
+          <span className={['p-d-flex p-jc-end', styles.progress].join(' ')}>1/5</span>
         </header>
         <div className={style.content}>
           1234
