@@ -41,5 +41,6 @@ async function testPool() {
 }
 
 module.exports = {
-    getPool
+    getPool,
+    pool
 };
