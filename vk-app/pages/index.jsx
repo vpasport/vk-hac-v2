@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'primereact/button';
 import Container from '../components/Container';
 import { ProgressBar } from 'primereact/progressbar';
-import style from './test/style.module.scss';
+import styles from './test/style.module.scss';
 
 export default function Home() {
   return (
@@ -14,12 +14,15 @@ export default function Home() {
             <Button icon='pi pi-times' className='p-button-text p-button-rounded'/>
           </div>
           <ProgressBar value={15} showValue={false}/>
-          <span className={['p-d-flex p-jc-end', styles.progress].join(' ')}>1/5</span>
+          <span className={['p-d-flex', 'p-jc-end', styles.progress].join(' ')}>1/5</span>
         </header>
-        <div className={style.content}>
+        <div className={styles.content}>
           1234
         </div>
-        <Button>hello</Button>
+        <div className='p-d-flex p-jc-between p-ai-center'>
+          <Button className={['p-button-secondary', styles.button].join(' ')} label='Назад' />
+          <Button className={styles.button} label='Следующий'/>
+        </div>
       </div>
     </Container>
   )
