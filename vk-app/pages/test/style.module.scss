@@ -1,3 +1,15 @@
-.header{
-    
+@import '../../styles/params.scss';
+
+.progress{
+    color: $gray;
+    margin-top: 15px;
+}
+
+.content{
+    min-height: calc(100vh - 200px);
+}
+
+.button{
+    width: calc(50% - 20px);
+    text-align: center;
 }
