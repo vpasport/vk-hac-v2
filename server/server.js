@@ -22,6 +22,8 @@ async function index() {
     const server = express();
     const dev = process.env.NODE_ENV === "dev";
 
+    server.use(express.static("static"));
+
     server.use(
         cors(
             {

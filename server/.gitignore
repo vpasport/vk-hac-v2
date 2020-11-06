@@ -1,4 +1,5 @@
 node_modules
 package-lock
 
-/src/config
+/src/config/*
+/static/uploads/*
