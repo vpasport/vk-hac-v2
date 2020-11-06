@@ -3,7 +3,7 @@
 const {
     reg,
     auth
-} = require("../database/user");
+} = require("../database/users");
 
 async function registrate(req, res){
     const result = await reg(

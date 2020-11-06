@@ -45,7 +45,7 @@ async function index() {
     );
 
     server.use((req, res, next) => {
-        console.log(req)
+        // console.log(req)
 
         next()
     });
