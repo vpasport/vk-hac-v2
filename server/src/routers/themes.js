@@ -1,7 +1,6 @@
 "use strict";
 
 const { Router } = require("express");
-const pool = require("../database/pg/pool");
 const {
     getTheme: getTheme_,
     createTheme: createTheme_,

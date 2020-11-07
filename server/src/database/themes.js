@@ -59,7 +59,7 @@ async function getTheme(id) {
             }
         )
         part_blocks.map(el2 => el2.theme_parts_id === el.id ? result.parts[i].blocks.push({
-            type : el2.type,
+            type: el2.type,
             attachment: el2.attachment
         }) : '')
     })
@@ -70,13 +70,13 @@ async function getTheme(id) {
     }
 }
 
-async function createTheme(theme){
+async function createTheme(theme) {
     const client = await pool.connect();
     await client.query('begin');
 
     let theme_id = 'error'
 
-    try{
+    try {
         theme_id = (
             await client.query(
                 `insert
@@ -89,7 +89,7 @@ async function createTheme(theme){
             )
         ).rows[0].id;
 
-        theme.parts.map( async part => {
+        theme.parts.map(async part => {
             let theme_parts_id = (
                 await client.query(
                     `insert
@@ -102,7 +102,7 @@ async function createTheme(theme){
                 )
             ).rows[0].id;
 
-            part.blocks.map( async block => {
+            part.blocks.map(async block => {
                 await client.query(
                     `insert
                         into part_blocks
@@ -112,8 +112,8 @@ async function createTheme(theme){
                     [block.type, block.attachment, theme_parts_id]
                 )
             })
-        } )
-    } catch(e){
+        })
+    } catch (e) {
         await client.query('rollback');
         client.release()
         throw e;
@@ -128,7 +128,7 @@ async function createTheme(theme){
     }
 }
 
-async function getAllThemes(){
+async function getAllThemes() {
     let result = (
         await pool.query(
             `select *
@@ -137,7 +137,7 @@ async function getAllThemes(){
     ).rows;
 
     return {
-        isSuccess : true,
+        isSuccess: true,
         result
     }
 }

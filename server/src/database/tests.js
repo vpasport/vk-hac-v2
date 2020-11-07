@@ -146,7 +146,7 @@ async function createTest(test) {
     }
 }
 
-async function getAllTestsByThemes(id){
+async function getAllTestsByThemes(id) {
     let result = (
         await pool.query(
             `select *
@@ -160,7 +160,7 @@ async function getAllTestsByThemes(id){
     return result;
 }
 
-async function getAllTestsByAuthors(id){
+async function getAllTestsByAuthors(id) {
     let result = (
         await pool.query(
             `select *
@@ -174,9 +174,70 @@ async function getAllTestsByAuthors(id){
     return result;
 }
 
+async function addAnswers(answers) {
+    const client = await pool.connect();
+    await client.query('begin');
+
+    console.log(answers)
+
+    try {
+        answers.map( async el => {
+            if (!el["answer"]) {
+                el.answer = null
+            }
+            console.log(el)
+
+            await client.query(
+                `insert
+                    into user_answers
+                    (users_id, answer_options_id, answer, question_id)
+                values
+                    ($1, $2, $3, $4)`,
+                [el.user_id, el.answer_options_id, el.answer, el.question_id]
+            )
+
+            await client.query(
+                `update 
+                    users
+                set score = (
+                                select score
+                                    from users
+                                where
+                                    id = $1
+                            ) + (
+                                select value
+                                    from answer_options
+                                where
+                                    id = $2
+                            )
+                where
+                    id = $1 and (
+                                select is_correct
+                                    from answer_options
+                                where 
+                                    id = $2
+                    )`,
+                [el.user_id, el.answer_options_id]
+            )
+        })
+    } catch (e) {
+        await client.query('rollback');
+        client.release();
+        throw e;
+    }
+
+    await client.query('commit');
+    client.release()
+
+    return {
+        isSuccess: true
+    }
+}
+
 module.exports = {
     getTest,
     createTest,
     getAllTestsByThemes,
-    getAllTestsByAuthors
+    getAllTestsByAuthors,
+    addAnswers
 }

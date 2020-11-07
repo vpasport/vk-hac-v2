@@ -200,8 +200,7 @@ async function getAllByCompaniesAndConfirmedStatuses(company_id, status_id) {
             )
         ).rows;
     }
-    console.log(result)
-
+    
     let users = []
     for (let { vk_id } of result) {
         let user = await api.call('users.get', {
@@ -210,8 +209,6 @@ async function getAllByCompaniesAndConfirmedStatuses(company_id, status_id) {
         })
         users.push(user[0])
     }
-
-    console.log(users)
 
     let res = {
         users: []
