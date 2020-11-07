@@ -1,0 +1,88 @@
+.container{
+    flex: 1;
+    padding: 20px 0;
+    background: linear-gradient(to right, #ffffff 0%,#ffffff 50%,#333333 50%,#333333 100%);
+}
+
+.infoBlock{
+    width: 50%;
+
+    &_light{
+
+        .infoBlock__text{
+            color: #333333;
+
+            &_color{
+                color: #F7D467;
+            }
+        }
+
+        .infoBlock__points{
+            color: #333333;
+        }
+
+    }
+
+    &_dark{
+
+        .infoBlock__text{
+            color: #BDBDBD;
+
+            &_color{
+                color: #EB5757;
+            }
+        }
+
+        .infoBlock__points{
+            color: white;
+        }
+
+        .infoBlock__image{
+            margin-top: 10px;
+        }
+
+    }
+
+    &__text{
+        font-size: 20px;
+        font-weight: bold;
+        display: block;
+        text-align: center;
+    }
+
+    &__points{
+        display: block;
+        margin-top: 100px;
+        font-size: 36px;
+        text-align: center;
+    }
+
+    &__image{
+        width: 80%;
+        display: block;
+        margin: auto;
+    }
+}
+
+.message{
+    width: calc(100% - 40px);
+    margin: 60px auto 0;
+    padding: 10px 35px;
+    color: white;
+    text-align: center;
+    font-size: 24px;
+
+    &_good{
+        background: #27AE60;
+    }
+
+    &_bad{
+        background: #EB5757;
+    }
+}
+
+.backButton{
+    display: block;
+    width: calc(100% - 40px);
+    margin: 50px auto 0;
+}
