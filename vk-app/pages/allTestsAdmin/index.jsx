@@ -13,7 +13,11 @@ const AllTestsAdmin = ({allTests}) => {
         <Container>
             <header className={`p-d-flex p-jc-between p-ai-center ${styles.header}`}>
                 <div className='p-d-flex p-jc-between p-ai-center'>
-                    <Button icon='pi pi-arrow-left' className='p-button-text' />
+                    <Button 
+                        icon='pi pi-arrow-left' 
+                        className='p-button-text'
+                        onClick={() => router.push('/')}
+                    />
                     <h2 className={styles.header__text}>Тесты</h2>
                 </div>
                 <Button 
