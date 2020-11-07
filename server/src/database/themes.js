@@ -128,7 +128,22 @@ async function createTheme(theme){
     }
 }
 
+async function getAllThemes(){
+    let result = (
+        await pool.query(
+            `select *
+                from themes`
+        )
+    ).rows;
+
+    return {
+        isSuccess : true,
+        result
+    }
+}
+
 module.exports = {
     getTheme,
-    createTheme
+    createTheme,
+    getAllThemes
 }

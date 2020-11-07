@@ -84,7 +84,6 @@ async function createTest(test) {
     await client.query('begin');
 
     try {
-
         let test_id = (
             await client.query(
                 `insert
@@ -147,7 +146,37 @@ async function createTest(test) {
     }
 }
 
+async function getAllTestsByThemes(id){
+    let result = (
+        await pool.query(
+            `select *
+                from tests
+            where
+                theme_id = $1`,
+            [id]
+        )
+    ).rows;
+
+    return result;
+}
+
+async function getAllTestsByAuthors(id){
+    let result = (
+        await pool.query(
+            `select *
+                from tests
+            where
+                author = $1`,
+            [id]
+        )
+    ).rows
+
+    return result;
+}
+
 module.exports = {
     getTest,
-    createTest
+    createTest,
+    getAllTestsByThemes,
+    getAllTestsByAuthors
 }

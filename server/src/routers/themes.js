@@ -1,9 +1,11 @@
 "use strict";
 
 const { Router } = require("express");
+const pool = require("../database/pg/pool");
 const {
     getTheme: getTheme_,
-    createTheme: createTheme_
+    createTheme: createTheme_,
+    getAllThemes: getAllThemes_
 } = require("../database/themes");
 
 async function getTheme({ params: { id } }, res) {
@@ -27,11 +29,18 @@ async function createTheme({body}, res){
         })
 }
 
+async function getAllThemes(req, res){
+    let result = await getAllThemes_();
+
+    res.json(result)
+}
+
 function index() {
     const router = new Router();
 
     router.get("/:id", getTheme);
     router.post("/", createTheme)
+    router.get("/", getAllThemes)
 
     return router;
 }
