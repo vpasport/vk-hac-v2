@@ -7,6 +7,7 @@ const {
 } = require("./main")
 const tests = require('./tests');
 const themes = require("./themes");
+const users = require("./users")
 
 function index(server) {
     server.post("/registrate", registrate);
@@ -16,6 +17,8 @@ function index(server) {
     server.use("/test", tests);
 
     server.use("/theme", themes);
+
+    server.use("/user", users);
 }
 
 module.exports = index

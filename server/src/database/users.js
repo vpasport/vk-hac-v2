@@ -36,7 +36,7 @@ async function reg(vk_id, pass, role) {
         }
     );
 
-    let side = Math.random() > 0.8 ? 'добро' : 'зло' 
+    let side = Math.random() > 0.8 ? 'добро' : 'зло'
 
     let id = (
         await pool.query(
@@ -105,18 +105,9 @@ async function auth(vk_id, pass) {
         )
     ).rows[0]
 
-    let command = (
-        await pool.query(
-            `select *
-                from commands
-            where
-                id = $1`,
-            [data.command_id]
-        )
-    ).rows[0]
 
     let user = await api.call('users.get', {
-        user_ids: 172349355,
+        user_ids: vk_id,
         fields: 'photo_100'
     })
 
@@ -130,13 +121,24 @@ async function auth(vk_id, pass) {
         side: data.side,
         company: company.name,
         city: city.name,
-        command: {
+    }
+
+    if (data.command_id !== null) {
+        let command = (
+            await pool.query(
+                `select *
+                    from commands
+                where
+                    id = $1`,
+                [data.command_id]
+            )
+        ).rows[0]
+
+        result.command = {
             name: command.name,
             description: command.description
         }
     }
-
-    console.log( result )
 
     return {
         isSuccess: true,
@@ -144,7 +146,98 @@ async function auth(vk_id, pass) {
     }
 }
 
+async function setConfirmed(id, status_id) {
+    let result = await pool.query(
+        `update 
+            users
+        set
+            confirmed_status_id = $1
+        where
+            id = $2`,
+        [status_id, id]
+    )
+
+    return {
+        isSuccess: true
+    }
+}
+
+async function getConfirmedStatuses() {
+    let result = (
+        await pool.query(
+            `select * 
+            from confirmed_statuses`
+        )
+    ).rows;
+
+    return {
+        isSuccess: true,
+        result
+    }
+}
+
+async function getAllByCompaniesAndConfirmedStatuses(company_id, status_id) {
+    let result;
+
+    if (status_id == -1) {
+        result = (
+            await pool.query(
+                `select id, vk_id
+                    from users
+                where
+                    company_id = $1`,
+                [company_id]
+            )
+        ).rows;
+    } else {
+        result = (
+            await pool.query(
+                `select id, vk_id
+                    from users
+                where
+                    company_id = $1 and confirmed_status_id = $2`,
+                [company_id, status_id]
+            )
+        ).rows;
+    }
+    console.log(result)
+
+    let users = []
+    for (let { vk_id } of result) {
+        let user = await api.call('users.get', {
+            user_ids: vk_id,
+            fields: 'photo_100'
+        })
+        users.push(user[0])
+    }
+
+    console.log(users)
+
+    let res = {
+        users: []
+    }
+
+    result.map((el, i) => {
+        let user = {
+            id: el.id,
+            vk_id: el.vk_id,
+            first_name: users[i].first_name,
+            last_name: users[i].last_name,
+            photo: users[i].photo_100
+        }
+        res.users.push(user)
+    })
+
+    return {
+        isSuccess: true,
+        result: res
+    }
+}
+
 module.exports = {
     reg,
-    auth
+    auth,
+    getConfirmedStatuses,
+    setConfirmed,
+    getAllByCompaniesAndConfirmedStatuses
 }

@@ -1,3 +1,5 @@
+insert into confirmed_statuses (description) values ('подтвержден'), ('откланен'), ('ожидает');
+
 insert into themes (name) values ('Игра “Ведьмак”');
 
 insert into theme_parts (name, part, theme_id) values ('Часть 1', 1, 1);
