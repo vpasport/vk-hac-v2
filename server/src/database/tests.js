@@ -80,8 +80,6 @@ async function getTest(id) {
 }
 
 async function createTest(test) {
-    console.log(test)
-
     const client = await pool.connect();
     await client.query('begin');
 
@@ -99,7 +97,7 @@ async function createTest(test) {
             )
         ).rows[0].id;
 
-        test.questions.map(async question =>  {
+        test.questions.map(async question => {
 
             let question_id = (
                 await client.query(
@@ -142,6 +140,11 @@ async function createTest(test) {
 
     await client.query('commit');
     client.release()
+
+    return {
+        isSuccess: true,
+        test_id
+    }
 }
 
 module.exports = {

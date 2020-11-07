@@ -18,6 +18,13 @@ async function createTest({body}, res){
     let result = await createTest_(
         body
     )
+
+    if(result.isSuccess)
+        res.json(result)
+    else
+        res.json({
+            isSuccess: false
+        })
 }
 
 function index(){

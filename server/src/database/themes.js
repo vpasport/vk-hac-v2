@@ -70,6 +70,65 @@ async function getTheme(id) {
     }
 }
 
+async function createTheme(theme){
+    const client = await pool.connect();
+    await client.query('begin');
+
+    let theme_id = 'error'
+
+    try{
+        theme_id = (
+            await client.query(
+                `insert
+                    into themes
+                    (name)
+                values
+                    ($1)
+                returning id`,
+                [theme.name]
+            )
+        ).rows[0].id;
+
+        theme.parts.map( async part => {
+            let theme_parts_id = (
+                await client.query(
+                    `insert
+                        into theme_parts
+                        (name, part, theme_id)
+                    values
+                        ($1, $2, $3)
+                    returning id`,
+                    [part.name, part.part, theme_id]
+                )
+            ).rows[0].id;
+
+            part.blocks.map( async block => {
+                await client.query(
+                    `insert
+                        into part_blocks
+                        (type, attachment, theme_parts_id)
+                    values
+                        ($1, $2, $3)`,
+                    [block.type, block.attachment, theme_parts_id]
+                )
+            })
+        } )
+    } catch(e){
+        await client.query('rollback');
+        client.release()
+        throw e;
+    }
+
+    await client.query('commit');
+    client.release()
+
+    return {
+        isSuccess: true,
+        theme_id
+    }
+}
+
 module.exports = {
-    getTheme
+    getTheme,
+    createTheme
 }
