@@ -7,8 +7,9 @@ const {
 
 async function registrate(req, res){
     const result = await reg(
-        req.body.login,
-        req.body.password
+        req.body.vk_id,
+        req.body.password,
+        req.body.role
     );
 
     res.json(result);

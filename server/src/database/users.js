@@ -11,24 +11,23 @@ const api = new API({
     token: process.env.VK_TOKEN
 })
 
-async function reg(login, pass) {
+async function reg(vk_id, pass, role) {
     let data = (
         await pool.query(
             `select * 
                 from users 
             where 
-                login = $1`,
-            [login]
+                vk_id = $1`,
+            [vk_id]
         )
     );
 
     if (data.rows.length > 0)
         return {
             isSuccess: false,
-            error: "this login alredy exists"
+            error: "this vk_id alredy exists"
         };
 
-    console.log(pass)
     let { hash, salt, hashAndSalt } = hash_(
         pass,
         {
@@ -37,11 +36,13 @@ async function reg(login, pass) {
         }
     );
 
+    let side = Math.random() > 0.8 ? 'добро' : 'зло' 
+
     let id = (
         await pool.query(
-            `insert into users (login, password, role)
-            values ($1, $2, $3) returning id`,
-            [login, hashAndSalt, 'user']
+            `insert into users (vk_id, password, role, score, side)
+            values ($1, $2, $3, 0, $4) returning id`,
+            [vk_id, hashAndSalt, role, side]
         )
     ).rows[0].id;
 
@@ -65,7 +66,7 @@ async function auth(vk_id, pass) {
     if (data === undefined)
         return {
             isSuccess: false,
-            error: 'invalid login'
+            error: 'invalid vk_id'
         };
 
     let pass_ = data.password.split(';');

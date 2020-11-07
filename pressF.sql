@@ -31,3 +31,9 @@ insert into questions (type, description) values ('free', 'Опишите пог
 insert into tests (name, description, author) values ('Тест о погоде', 'Ответьте на несколько вопросов о погоде, но учтите, что вопросы могли быть составлины при другой погоде', '<1>');
 
 insert into tests_questions (question_id, test_id) values (1, 1), (2, 1), (3, 1);
+
+
+
+insert into cities (name) values ('Иркутск');
+insert into companies (name, city_id) values ('Грибная фабрика', 1);
+insert into commands (name, description, company_id) values ('Грибы', 'Комманда, ответственная за создание проекта на хакатоне', 1);
