@@ -12,8 +12,6 @@ const cookieParser = require("cookie-parser");
 const dbConf = require("./src/config/dbconnect.json")
 const { getPool } = require("./src/database/pg/pool")
 
-const {API} = require("vk-io")
-
 async function index() {
     const pool = await getPool(dbConf)
 
@@ -23,17 +21,6 @@ async function index() {
 
     const server = express();
     const dev = process.env.NODE_ENV === "dev";
-
-    const api = new API({
-        token: process.env.VK_TOKEN
-    })
-
-    const user = await api.call( 'users.get',{
-        user_ids: 172349355,
-        fields: 'photo'
-    })
-
-    console.log( user )
 
     server.use(express.static("static"));
 

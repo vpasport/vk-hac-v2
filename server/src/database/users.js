@@ -3,8 +3,13 @@
 const dbConf = require("../config/dbconnect.json");
 const { getPool } = require("./pg/pool")
 const hash_ = require("./hash");
+const { API } = require("vk-io");
 
 const pool = getPool(dbConf)
+
+const api = new API({
+    token: process.env.VK_TOKEN
+})
 
 async function reg(login, pass) {
     let data = (
@@ -23,7 +28,7 @@ async function reg(login, pass) {
             error: "this login alredy exists"
         };
 
-    console.log( pass )
+    console.log(pass)
     let { hash, salt, hashAndSalt } = hash_(
         pass,
         {
@@ -46,14 +51,14 @@ async function reg(login, pass) {
     }
 }
 
-async function auth(login, pass) {
+async function auth(vk_id, pass) {
     let data = (
         await pool.query(
             `select 
-                password, role, id
+                *
             from users as u
-                where u."login" = $1`,
-            [login]
+                where u.vk_id = $1`,
+            [vk_id]
         )
     ).rows[0];
 
@@ -65,7 +70,7 @@ async function auth(login, pass) {
 
     let pass_ = data.password.split(';');
 
-    let {hash, salt, hashAndSalt} = hash_(
+    let { hash, salt, hashAndSalt } = hash_(
         pass,
         {
             salt: pass_[1],
@@ -76,14 +81,66 @@ async function auth(login, pass) {
     if (hash !== pass_[0])
         return {
             isSuccess: false,
-            error : 'invalid password'
+            error: 'invalid password'
         };
+
+    let company = (
+        await pool.query(
+            `select *
+                from companies
+            where
+                id = $1`,
+            [data.company_id]
+        )
+    ).rows[0]
+
+    let city = (
+        await pool.query(
+            `select *
+                from cities
+            where
+                id = $1`,
+            [company.city_id]
+        )
+    ).rows[0]
+
+    let command = (
+        await pool.query(
+            `select *
+                from commands
+            where
+                id = $1`,
+            [data.command_id]
+        )
+    ).rows[0]
+
+    let user = await api.call('users.get', {
+        user_ids: 172349355,
+        fields: 'photo_100'
+    })
+
+    let result = {
+        vk_id: data.vk_id,
+        first_name: user[0].first_name,
+        last_name: user[0].last_name,
+        photo: user[0].photo_100,
+        role: data.role,
+        score: data.score,
+        side: data.side,
+        company: company.name,
+        city: city.name,
+        command: {
+            name: command.name,
+            description: command.description
+        }
+    }
+
+    console.log( result )
 
     return {
         isSuccess: true,
-        role: data.role,
-        id: data.id
-    }   
+        user: result
+    }
 }
 
 module.exports = {

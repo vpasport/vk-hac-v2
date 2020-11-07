@@ -16,13 +16,13 @@ async function registrate(req, res){
 
 async function login(req, res){
     const result = await auth(
-        req.body.login,
+        req.body.vk_id,
         req.body.password
     );
 
     if (result.isSuccess) {
-        req.session.role = result.role
-        req.session.user_id = result.role
+        req.session.role = result.user.role
+        req.session.user_id = result.user.vk_id
     };
 
     res.json(result);
