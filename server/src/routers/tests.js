@@ -2,7 +2,8 @@
 
 const {Router} = require("express");
 const {
-    getTest: getTest_
+    getTest: getTest_,
+    createTest: createTest_
 } = require("../database/tests");
 
 async function getTest( {params: {id}}, res ){
@@ -13,10 +14,17 @@ async function getTest( {params: {id}}, res ){
     res.json( result )
 }
 
+async function createTest({body}, res){
+    let result = await createTest_(
+        body
+    )
+}
+
 function index(){
     const router = new Router();
 
     router.get("/:id", getTest);
+    router.post("/", createTest)
 
     return router;
 }
