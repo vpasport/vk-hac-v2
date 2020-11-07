@@ -7,7 +7,9 @@ const {
     getAllByCompaniesAndConfirmedStatuses: getAllByCompaniesAndConfirmedStatuses_,
     getUsersCommand: getUsersCommand_,
     getCommands: getCommands_,
-    remind: remind_
+    remind: remind_,
+    getTests: getTests_,
+    getLiders: getLiders_
 } = require("../database/users");
 
 async function setConfirmed(
@@ -77,6 +79,30 @@ async function remind({ body: { company_id } }, res) {
     )
 }
 
+async function getTests({ params: { id } }, res) {
+    let result = await getTests_(
+        id
+    )
+
+    if (result.isSuccess)
+        res.json(result)
+    else
+        res.json({
+            isSuccess: false
+        })
+}
+
+async function getLiders(req, res){
+    let result = await getLiders_();
+
+    if( result.isSuccess )
+        res.json(result)
+    else
+        res.json({
+            isSuccess: false
+        })
+}
+
 function index() {
     const router = new Router();
 
@@ -85,7 +111,9 @@ function index() {
     router.post("/companies/:id", getAllByCompaniesAndConfirmedStatuses);
     router.get("/command/:id", getUsersCommand);
     router.get("/commands", getCommands);
-    router.post("/remind", remind)
+    router.post("/remind", remind);
+    router.get("/tests/:id", getTests);
+    router.get("/liders", getLiders);
 
     return router;
 }

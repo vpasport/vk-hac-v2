@@ -304,7 +304,7 @@ async function remind(company_id) {
         await api.call('messages.send', {
             random_id: crypto.randomInt(0, 1000000),
             peer_ids: users.map(el => el.vk_id),
-            message: 'Привет, твой начальник попросил меня напомнить тебе, что тебе нужно проходить тесты\nТак что давай быстрее заходи, а то он будет злиться🙂'
+            message: 'Привет, твой начальник попросил меня напомнить тебе, что тебе нужно проходить тесты\n\nТак что давай быстрее заходи, а то он будет злиться🙂'
         })
         return {
             isSuccess: true
@@ -317,7 +317,56 @@ async function remind(company_id) {
 }
 
 async function getTests(id){
+    let tests = (
+        await pool.query(
+            `select 
+                t.id, t.name, t.description
+            from 
+                tests as t,
+                tests_commands as tc,
+                users as u
+            where
+                t.id = tc.test_id and tc.command_id = u.command_id and u.id = 5`
+        )
+    ).rows;
 
+    return {
+        isSuccess: true,
+        tests
+    }
+}
+
+async function getLiders(){
+    let users = (
+        await pool.query(
+            `select id, vk_id, score
+            from
+                users
+            order by score desc`
+        )
+    ).rows;
+
+    let liders = []
+
+    for (let [i, { vk_id }] of Object.entries(users)) {
+        let user = await api.call('users.get', {
+            user_ids: vk_id,
+            fields: 'photo_100'
+        })
+        liders.push({
+            id: users[i].id,
+            vk_id: users[i].vk_id,
+            first_name: user[0].first_name,
+            last_name: user[0].last_name,
+            photo: user[0].photo_100,
+            score: users[i].score
+        })
+    }
+
+    return {
+        isSuccess: true,
+        liders
+    }
 }
 
 module.exports = {
@@ -329,5 +378,6 @@ module.exports = {
     getUsersCommand,
     getCommands,
     remind,
-    getTests
+    getTests,
+    getLiders
 }
