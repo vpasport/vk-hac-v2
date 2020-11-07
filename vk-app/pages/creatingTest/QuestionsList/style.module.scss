@@ -1,0 +1,50 @@
+.input{
+    width: 100%;
+    margin-top: 5px;
+}
+
+.textarea{
+    width: 100%;
+    margin-top: 5px;
+    height: 150px;
+}
+
+.questionsList{
+
+    &__item{
+        padding: 15px 0;
+    }
+
+}
+
+.addButton{
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    color: #3F8AE0;
+    outline: none;
+    padding: 0;
+    font-size: 16px;
+    margin-top: 15px;
+
+    &__icon{
+        display: flex;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        background: #F2F3F5;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__text{
+        margin-left: 10px;
+    }
+}
+
+.blockButton{
+    width: 100%;
+    display: block;
+    margin-top: 50px;
+}

@@ -1,9 +1,11 @@
-import Page0 from './Page0';
-import Page1 from './Page1';
-import Page2 from './Page2';
+import PageStart from './PageStart';
+import PageUserCorporation from './PageUserCorporation';
+import PageUserAbout from './PageUserAbout';
+import PageAdminCorporation from './PageAdminCorporation';
 
 export {
-    Page0,
-    Page1,
-    Page2
+    PageStart,
+    PageUserCorporation,
+    PageUserAbout,
+    PageAdminCorporation
 }

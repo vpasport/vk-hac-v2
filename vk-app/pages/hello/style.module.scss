@@ -20,3 +20,43 @@
     justify-content: flex-start;
     color: #6D7885;
 }
+
+.startingText{
+    text-align: center;
+}
+
+.startingDropdown{
+    margin-top: 30px;
+    width: 100%;
+}
+
+.dots{
+    margin-top: 30px;
+}
+
+.label{
+    color: #6D7885;
+}
+
+.cityDropdown{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.input{
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+
+.buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
+
+    > button{
+        width: calc(50% - 20px);
+    }
+}
