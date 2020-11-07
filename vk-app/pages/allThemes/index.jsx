@@ -27,7 +27,7 @@ const AllThemes = ({allThemes}) => {
                     <li 
                         className={styles.list__item} 
                         key={i}
-                        onClick={() => router.push('/completedTest')}
+                        onClick={() => router.push(`/theme?id=${el.id}`)}
                     >
                         <span className={styles.list__index}>{i + 1}</span>
                         <span>{el.name}</span>
