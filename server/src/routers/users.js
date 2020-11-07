@@ -3,8 +3,11 @@
 const { Router } = require("express");
 const {
     setConfirmed: setConfirmed_,
-    getConfirmedStatuses: getConfirmedStaruses_,
-    getAllByCompaniesAndConfirmedStatuses: getAllByCompaniesAndConfirmedStatuses_
+    getConfirmedStatuses: getConfirmedStatuses_,
+    getAllByCompaniesAndConfirmedStatuses: getAllByCompaniesAndConfirmedStatuses_,
+    getUsersCommand: getUsersCommand_,
+    getCommands: getCommands_,
+    remind: remind_
 } = require("../database/users");
 
 async function setConfirmed(
@@ -20,8 +23,8 @@ async function setConfirmed(
         res.json(result)
 }
 
-async function getConfirmedStaruses(req, res) {
-    let result = await getConfirmedStaruses_();
+async function getConfirmedStatuses(req, res) {
+    let result = await getConfirmedStatuses_();
 
     if (result.isSuccess)
         res.json(result);
@@ -36,16 +39,53 @@ async function getAllByCompaniesAndConfirmedStatuses(
         status_id
     )
 
-    if(result.isSuccess)
+    if (result.isSuccess)
         res.json(result)
+}
+
+async function getUsersCommand({ params: { id } }, res) {
+    let result = await getUsersCommand_(
+        id
+    )
+
+    if (result.isSuccess)
+        res.json(result)
+    else
+        res.json({
+            isSuccess: false
+        })
+}
+
+async function getCommands(req, res) {
+    let result = await getCommands_();
+
+    if (result.isSuccess)
+        res.json(result)
+    else
+        res.json({
+            isSuccess: false
+        })
+}
+
+async function remind({ body: { company_id } }, res) {
+    let result = await remind_(
+        company_id
+    )
+
+    res.json(
+        result
+    )
 }
 
 function index() {
     const router = new Router();
 
-    router.get("/confirmed/:id", setConfirmed);
-    router.get("/statuses", getConfirmedStaruses);
-    router.get("/companies/:id", getAllByCompaniesAndConfirmedStatuses);
+    router.post("/confirmed/:id", setConfirmed);
+    router.get("/statuses", getConfirmedStatuses);
+    router.post("/companies/:id", getAllByCompaniesAndConfirmedStatuses);
+    router.get("/command/:id", getUsersCommand);
+    router.get("/commands", getCommands);
+    router.post("/remind", remind)
 
     return router;
 }

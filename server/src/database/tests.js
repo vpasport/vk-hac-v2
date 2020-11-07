@@ -178,14 +178,11 @@ async function addAnswers(answers) {
     const client = await pool.connect();
     await client.query('begin');
 
-    console.log(answers)
-
     try {
         answers.map( async el => {
             if (!el["answer"]) {
                 el.answer = null
             }
-            console.log(el)
 
             await client.query(
                 `insert
@@ -234,10 +231,53 @@ async function addAnswers(answers) {
     }
 }
 
+async function addCommands(id, command_ids){
+    let s = command_ids.map( (_, i) => ( i += 2, `( $1, $${i})` ) ).join(',');
+
+    await pool.query(
+        `insert
+            into tests_commands
+            (test_id, command_id)
+        values
+            ${s}`,
+        [id, ...command_ids.map(el => el.id)]
+    )
+
+    return {
+        isSuccess: true
+    }
+}
+
+async function getTestsByCommand(id){
+    let test_ids = (
+        await pool.query(
+            `select test_id
+                from tests_commands
+            where
+                command_id = $1`,
+            [id]
+        )
+    ).rows;
+
+    let tests = []
+
+    for(let {test_id} of test_ids){
+        let test = await getTest( test_id );
+        tests.push(test.result)
+    }
+
+    return {
+        isSuccess: true,
+        tests
+    }
+}
+
 module.exports = {
     getTest,
     createTest,
     getAllTestsByThemes,
     getAllTestsByAuthors,
-    addAnswers
+    addAnswers,
+    addCommands,
+    getTestsByCommand
 }

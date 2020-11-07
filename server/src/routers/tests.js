@@ -6,7 +6,9 @@ const {
     createTest: createTest_,
     getAllTestsByThemes: getAllTestsByThemes_,
     getAllTestsByAuthors: getAllTestsByAuthor_,
-    addAnswers: addAnswers_
+    addAnswers: addAnswers_,
+    addCommands: addCommands_,
+    getTestsByCommand: getTestsByCommand_
 } = require("../database/tests");
 
 async function getTest({ params: { id } }, res) {
@@ -47,17 +49,44 @@ async function getAllTestsByAuthors({ params: { id } }, res) {
     )
 
     res.json({
-        isSuccess :true,
+        isSuccess: true,
         result
     })
 }
 
-async function addAnswers({body: {answers}}, res){
+async function addAnswers({ body: { answers } }, res) {
     let result = await addAnswers_(
         answers
-    )   
+    )
+
+    if (result.isSuccess)
+        res.json(result)
+    else
+        res.json({
+            isSuccess: false
+        })
+}
+
+async function addCommands({ params: { id }, body: { command_ids } }, res) {
+    let result = await addCommands_(
+        id,
+        command_ids
+    )
 
     if(result.isSuccess)
+        res.json(result)
+    else
+        res.json({
+            isSuccess: false
+        })
+}
+
+async function getTestsByCommand({params: {id}}, res){
+    let result = await getTestsByCommand_(
+        id
+    )
+
+    if( result.isSuccess )
         res.json(result)
     else
         res.json({
@@ -73,6 +102,8 @@ function index() {
     router.get("/all/theme/:id", getAllTestsByThemes)
     router.get("/all/author/:id", getAllTestsByAuthors)
     router.post("/answers", addAnswers);
+    router.post("/addcommands/:id", addCommands);
+    router.get("/command/:id", getTestsByCommand);
 
     return router;
 }

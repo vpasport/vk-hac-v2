@@ -3,7 +3,7 @@
 const dbConf = require("../config/dbconnect.json");
 const { getPool } = require("./pg/pool");
 
-const pool = getPool();
+const pool = getPool(dbConf);
 
 async function getTheme(id) {
     let theme = (
