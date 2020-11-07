@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import styles from './style.module.scss';
 import { useRouter } from 'next/router';
 
-const AllTestsAdmin = ({allTests}) => {
+const AllThemes = ({allThemes}) => {
 
     const router = useRouter();
 
@@ -14,16 +14,16 @@ const AllTestsAdmin = ({allTests}) => {
             <header className={`p-d-flex p-jc-between p-ai-center ${styles.header}`}>
                 <div className='p-d-flex p-jc-between p-ai-center'>
                     <Button icon='pi pi-arrow-left' className='p-button-text' />
-                    <h2 className={styles.header__text}>Тесты</h2>
+                    <h2 className={styles.header__text}>Темы</h2>
                 </div>
                 <Button 
                     icon='pi pi-plus-circle' 
                     className='p-button-text' 
-                    onClick={() => router.push('/creatingTest')}
+                    onClick={() => router.push('/creatingTheme')}
                 />
             </header>
             <ul className={styles.list}>
-                {allTests.map((el, i) => 
+                {allThemes.map((el, i) => 
                     <li 
                         className={styles.list__item} 
                         key={i}
@@ -39,14 +39,14 @@ const AllTestsAdmin = ({allTests}) => {
 }
 
 export async function getServerSideProps(context) {
-    let allTestsRequest = await fetcher('http://192.168.43.15:3001/test/all/author/5');
-    let {result: allTests} = await allTestsRequest.json();
+    let allTestsRequest = await fetcher('http://192.168.43.15:3001/theme');
+    let {result: allThemes} = await allTestsRequest.json();
 
     return {
         props: {
-            allTests
+            allThemes
         }
     }
 }
 
-export default AllTestsAdmin;
+export default AllThemes;

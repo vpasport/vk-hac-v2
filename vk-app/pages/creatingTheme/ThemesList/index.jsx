@@ -3,9 +3,11 @@ import styles from './style.module.scss';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import fetcher from '../../../helpers/fetcher';
+import { useRouter } from 'next/router';
 
 const ThemesList = ({theme, setTheme, showTheme, addTheme}) => {
 
+    const router = useRouter();
     const [name, setName] = useState(theme.name);
 
     const saveTheme = async () => {
@@ -20,7 +22,11 @@ const ThemesList = ({theme, setTheme, showTheme, addTheme}) => {
     return (
         <React.Fragment>
             <header>
-                <Button icon='pi pi-arrow-left' className='p-button-text p-button-rounded' />
+                <Button 
+                    icon='pi pi-arrow-left' 
+                    className='p-button-text p-button-rounded'
+                    onClick={() => router.push('/allThemes')}
+                />
             </header>
             <label htmlFor="name" className='p-mt-3 p-d-block'>Название темы</label>
             <InputText 
