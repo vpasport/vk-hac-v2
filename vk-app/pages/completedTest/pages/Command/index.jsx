@@ -1,8 +1,13 @@
 import React from 'react';
 import styles from './style.module.scss';
 import { Button } from 'primereact/button';
+import { useRouter } from 'next/router';
 
 const Command = () => {
+    let isAdmin = true;
+
+    const router = useRouter();
+
     return (
         <div className='container'>
             <table className={styles.table}>
@@ -19,7 +24,11 @@ const Command = () => {
                     <td className={[styles.pointPosition, styles[`pointPosition${1}`]].join(' ')}>100</td>
                 </tr>
             </table>
-            <Button label='К списку тестов' className={styles.backButton}/>
+            <Button 
+                label='К списку тестов' 
+                className={styles.backButton}
+                onClick={() => router.push(isAdmin ? '/allTestsAdmin' : '/')}
+            />
         </div>
     )
 }

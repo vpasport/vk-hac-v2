@@ -1,0 +1,28 @@
+.label{
+    color: #6D7885;
+}
+
+.input{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.answersList{
+
+    &__item{
+        padding: 15px 0;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    &__info{
+        flex: 1;
+        margin-left: 10px;
+    }
+}
+
+.blockButton{
+    width: 100%;
+    display: block;
+    margin-top: 50px;
+}
