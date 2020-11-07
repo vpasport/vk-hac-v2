@@ -4,8 +4,11 @@ import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import styles from './style.module.scss';
 import fetcher from '../../../helpers/fetcher';
+import { useRouter } from 'next/router';
 
 const QuestionsList = ({test, setTest, showQuestion, addQuestion}) => {
+
+    const router = useRouter();
 
     const [name, setName] = useState(test.name);
     const [description, setDescription] = useState(test.description);
@@ -20,13 +23,16 @@ const QuestionsList = ({test, setTest, showQuestion, addQuestion}) => {
             body: _test
         })
         result = result.json();
-        console.log(result)
     }
 
     return (
         <React.Fragment>
             <header>
-                <Button icon='pi pi-arrow-left' className='p-button-text' />
+                <Button 
+                    icon='pi pi-arrow-left' 
+                    className='p-button-text' 
+                    onClick={() => router.push('/allTestsAdmin')}
+                />
             </header>
             <label htmlFor="name" className='p-mt-3 p-d-block'>Название теста</label>
             <InputText 

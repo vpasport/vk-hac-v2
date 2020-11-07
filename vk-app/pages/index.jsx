@@ -12,8 +12,6 @@ export default function Home({startedQuestions}) {
 
   const [ questions, setQuestions ] = useState(startedQuestions);
   const [ activeIndex, setActiveIndex ] = useState(0);
-
-  console.log(questions)
   
   const question = questions[activeIndex];
 
@@ -75,34 +73,6 @@ export default function Home({startedQuestions}) {
 }
 
 export async function getServerSideProps(context) {
-  // const startedQuestions = [
-  //   {
-  //     id: 1,
-  //     type: 'single',
-  //     description: 'Как меня зовет',
-  //     answers: [
-  //       {
-  //         id: 1,
-  //         description: 'Маркиз',
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: 2,
-  //     type: 'single',
-  //     description: 'Как зовут мокриза букова',
-  //     answers: [
-  //       {
-  //         id: 2,
-  //         description: 'Макс'
-  //       },
-  //       {
-  //         id: 3,
-  //         description: 'Букав'
-  //       }
-  //     ]
-  //   }
-  // ].map(el => (el.activeIndex = null, el))
 
   let startedQuestions = await fetcher('http://192.168.43.15:3001/test/1');
   startedQuestions = await startedQuestions.json();

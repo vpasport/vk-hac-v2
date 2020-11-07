@@ -1,9 +1,14 @@
 import React from 'react';
 import styles from './styles.module.scss';
 import { Button } from 'primereact/button';
+import { useRouter } from 'next/router';
 
 const AllPoints = () => {
     let iswin = true;
+    let isAdmin = true;
+
+    const router = useRouter();
+
     return (
         <div className={styles.container}>
             <div className='p-d-flex'>
@@ -27,7 +32,11 @@ const AllPoints = () => {
             <div className={[styles.message, iswin ? styles.message_good : styles.message_bad].join(' ')}>
                 Побеждает комманда {iswin ? 'Добра' : 'Зла'}
             </div>
-            <Button label='К списку тестов' className={styles.backButton}/>
+            <Button 
+                label='К списку тестов' 
+                className={styles.backButton}
+                onClick={() => router.push(isAdmin ? '/allTestsAdmin' : '/')}
+            />
         </div>
     )
 }
