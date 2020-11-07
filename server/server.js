@@ -12,6 +12,8 @@ const cookieParser = require("cookie-parser");
 const dbConf = require("./src/config/dbconnect.json")
 const { getPool } = require("./src/database/pg/pool")
 
+const {API} = require("vk-io")
+
 async function index() {
     const pool = await getPool(dbConf)
 
@@ -21,6 +23,17 @@ async function index() {
 
     const server = express();
     const dev = process.env.NODE_ENV === "dev";
+
+    const api = new API({
+        token: process.env.VK_TOKEN
+    })
+
+    const user = await api.call( 'users.get',{
+        user_ids: 172349355,
+        fields: 'photo'
+    })
+
+    console.log( user )
 
     server.use(express.static("static"));
 
@@ -75,12 +88,19 @@ async function index() {
         )
     );
 
+    server.get("/auth", (req, res) => {
+        res.redirect(`https://oauth.vk.com/authorize?client_id=7653896
+                        &redirect_uri=http://localhost:3001&display=popup
+                        &scope=65536&response_type=code&v=5.124`)
+        // res.json(
+        //     {
+        //         status: 'Я живь'
+        //     }
+        // )
+    })
+
     server.get("/", (req, res) => {
-        res.json(
-            {
-                status: 'Я живь'
-            }
-        )
+        console.log(req)
     })
 
     initRouters(server);
