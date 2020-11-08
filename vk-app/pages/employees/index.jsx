@@ -4,6 +4,7 @@ import Container from '../../components/Container';
 import { Button } from 'primereact/button';
 import { useRouter } from 'next/router';
 import styles from './style.module.scss';
+import Avatar from '../../components/Avatar';
 
 const Employees = ({usersData, unconfirmedUsersData}) => {
 
@@ -81,7 +82,10 @@ const Employees = ({usersData, unconfirmedUsersData}) => {
                         <li className={styles.unconfirmedItem} key={i}>
                             <span className={styles.unconfirmedItem__index}>{i + 1}</span>
                             <div className={styles.unconfirmedItem__info}>
-                                <span>{`${el.first_name} ${el.last_name}`}</span>
+                                <div className='p-d-flex p-ai-center'>
+                                    <Avatar url={el.photo} />
+                                    <span className={styles.unconfirmedItem__name}>{`${el.first_name} ${el.last_name}`}</span>
+                                </div>
                                 <div className={styles.unconfirmedItem__buttons}>
                                     <Button 
                                         label='отклонить' 
@@ -106,6 +110,7 @@ const Employees = ({usersData, unconfirmedUsersData}) => {
                     {users.map((el, i) => 
                         <li className={styles.confirmedItem} key={i}>
                             <span className={styles.confirmedItem__index}>{i + 1}</span>
+                            <Avatar url={el.photo} />
                             <span className={styles.confirmedItem__info}>{`${el.first_name} ${el.last_name}`}</span>
                         </li>
                     )}

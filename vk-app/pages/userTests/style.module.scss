@@ -1,0 +1,30 @@
+.header{
+    padding-bottom: 10px;
+    border: solid #E1E3E6;
+    border-width: 0 0 1px 0;
+
+    &__text{
+        margin: 0;
+        margin-left: 10px;
+        font-size: 24px;
+    }
+}
+
+.list{
+    margin-top: 30px;
+
+    &__item{
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        background: #F2F2F2;
+        margin-bottom: 10px;
+    }
+
+    &__index{
+        font-size: 24px;
+        color: #3F8AE0;
+        display: block;
+        margin-right: 25px;
+    }
+}

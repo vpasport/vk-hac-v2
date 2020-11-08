@@ -42,6 +42,11 @@
             width: calc(50% - 10px);
         }
     }
+
+    &__name{
+        display: block;
+        margin-left: 10px;
+    }
 }
 
 .confirmedList{
@@ -51,13 +56,16 @@
 .confirmedItem{
     padding: 10px 0;
     display: flex;
+    align-items: center;
 
     &__index{
         color: #828282;
+        display: block;
+        margin-right: 20px;
     }
 
     &__info{
         display: block;
-        margin-left: 20px;
+        margin-left: 10px;
     }
 }

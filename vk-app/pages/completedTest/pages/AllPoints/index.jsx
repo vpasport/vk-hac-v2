@@ -25,7 +25,7 @@ const AllPoints = () => {
                         Комманда <br />
                         <span className={styles.infoBlock__text_color}>Зла</span>
                     </span>
-                    <span className={styles.infoBlock__points}>50/60</span>
+                    <span className={styles.infoBlock__points}>30/60</span>
                     <img src="./img/Novy_proekt_7.png" alt="good monster" className={styles.infoBlock__image}/>
                 </div>
             </div>
@@ -35,7 +35,7 @@ const AllPoints = () => {
             <Button 
                 label='К списку тестов' 
                 className={styles.backButton}
-                onClick={() => router.push(isAdmin ? '/allTestsAdmin' : '/')}
+                onClick={() => router.push(isAdmin ? '/allTestsAdmin' : '/userTests')}
             />
         </div>
     )

@@ -4,11 +4,11 @@ import styles from './style.module.scss';
 import Container from '../../components/Container';
 import { Button } from 'primereact/button';
 import { useRouter } from 'next/router';
+import Avatar from '../../components/Avatar';
 
 const Command = ({ command, tests }) => {
 
     const router = useRouter();
-    console.log(command, tests)
     return (
         <Container>
             <header className={`p-d-flex p-ai-start ${styles.header}`}>
@@ -47,6 +47,7 @@ const Command = ({ command, tests }) => {
                     {command.users.map((el, i) =>
                         <li className={styles.item} key={i}>
                             <span className={styles.item__index}>{i + 1}</span>
+                            <Avatar url={el.photo} />
                             <span className={styles.item__name}>{el.first_name} {el.last_name}</span>
                         </li>
                     )}

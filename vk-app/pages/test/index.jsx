@@ -7,7 +7,7 @@ import Answers from './_Answers';
 import { useRouter } from 'next/router';
 import fetcher from '../../helpers/fetcher';
 
-export default function Home({startedQuestions}) {
+export default function Home({startedQuestions, id}) {
   const router = useRouter();
 
   const [ questions, setQuestions ] = useState(startedQuestions);
@@ -21,9 +21,20 @@ export default function Home({startedQuestions}) {
     setQuestions(_questions)
   }
 
-  const sendData = () => {
-    const answerIndexes = questions.map(el => ({id: el.id, answerId: el.activeIndex}));
-    router.push('/completedTest')
+  const sendData = async () => {
+    const answerIndexes = questions.map(el => ({question_id: el.id, answer_options_id: el.activeIndex, user_id: 5}));
+
+    let sendResponse = await fetcher(`http://192.168.43.15:3001/test/answers`, {
+      method: 'POST',
+      body: {answers: answerIndexes}
+    })
+    sendResponse = await sendResponse.json();
+
+    if(sendResponse.isSuccess)
+      router.push(`/score?id=${id}`)
+    else
+      console.log('error')
+    
   }
 
   return (
@@ -72,15 +83,17 @@ export default function Home({startedQuestions}) {
   )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({query}) {
+  const id = query.id;
 
-  let startedQuestions = await fetcher('http://192.168.43.15:3001/test/1');
+  let startedQuestions = await fetcher(`http://192.168.43.15:3001/test/${id}`);
   startedQuestions = await startedQuestions.json();
   startedQuestions = startedQuestions.result.questions.map(el => (el.activeIndex = null, el));
 
   return {
     props: {
-      startedQuestions
+      startedQuestions,
+      id
     }
   };
 }

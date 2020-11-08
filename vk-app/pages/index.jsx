@@ -3,11 +3,32 @@ import styles from './menu/style.module.scss';
 import Container from '../components/Container'
 import { Button } from 'primereact/button';
 import { useRouter } from 'next/router';
+import fetcher from '../helpers/fetcher';
+import { Toast } from 'primereact/toast';
 
 const Menu = ({ compamyName = 'Gribnaya ferma' }) => {
 
     const router = useRouter();
     const isAdmin = true;
+    let toast;
+
+    const sendMessage = async () => {
+        let sendResponse = await fetcher(`http://192.168.43.15:3001/user/remind`, {
+            method: 'POST',
+            body: {
+                company_id: 1
+            }
+        })
+        sendResponse = await sendResponse.json();
+
+        if(sendResponse.isSuccess){
+            toast.show({
+                severity: 'success',
+                summary: 'Успешно',
+                detail: 'Рассылка отправлена'
+            })
+        }
+    }
 
     return (
         <Container>
@@ -28,7 +49,7 @@ const Menu = ({ compamyName = 'Gribnaya ferma' }) => {
                 <Button
                     className={`${styles.buttonTwo} p-button-warning`}
                     label='Тесты'
-                    onClick={() => router.push(isAdmin ? '/allTestsAdmin' : '')}
+                    onClick={() => router.push(isAdmin ? '/allTestsAdmin' : 'userTests')}
                 />
                 {isAdmin
                     ? <>
@@ -40,10 +61,12 @@ const Menu = ({ compamyName = 'Gribnaya ferma' }) => {
                         <Button
                             className={styles.buttonFour}
                             label='Рейтинг'
+                            onClick={() => router.push('/leaderboard')}
                         />
                         <Button
                             className={styles.buttonFive}
                             label='Напомнить о прохождении теста'
+                            onClick={sendMessage}
                         />
                     </>
                     : <Button
@@ -52,6 +75,7 @@ const Menu = ({ compamyName = 'Gribnaya ferma' }) => {
                     />
                 }
             </div>
+            <Toast ref={(el) => toast = el} position='bottom-left' style={{width: 'calc(100% - 20px)'}}/>
         </Container>
     )
 }

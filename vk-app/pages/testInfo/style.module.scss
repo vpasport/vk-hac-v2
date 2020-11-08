@@ -1,0 +1,17 @@
+.header{
+    padding-bottom: 10px;
+    border: solid #E1E3E6;
+    border-width: 0 0 1px 0;
+
+    &__text{
+        margin: 0;
+        margin-left: 10px;
+        font-size: 24px;
+    }
+}
+
+.blockButton{
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+}
